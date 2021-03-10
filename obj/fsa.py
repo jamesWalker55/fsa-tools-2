@@ -11,19 +11,21 @@ EPSILON = "ε"
 
 
 class FSA:
-    """A FSA representation"""
+    """A FSA representation
+    
+    ```
+    transitions: set[Transition]
+    alphabet: set[str]
+    start: str
+    ends: set[str]
+    ```
+    """
 
-    def __init__(
-        self,
-        transitions: Union[set[Transition], None] = None,
-        alphabet: Union[set[str], None] = None,
-        start: Union[str, None] = None,
-        ends: Union[set[str], None] = None
-    ):
-        self.transitions = transitions or set()
-        self.alphabet = alphabet
-        self.start = start
-        self.ends = ends
+    def __init__(self, transitions=None, alphabet=None, start=None, ends=None):
+        self.transitions: set[Transition] = transitions or set()
+        self.alphabet: set[str] = alphabet or set()
+        self.start: str = start or ""
+        self.ends: set[str] = ends or set()
 
     def __str__(self):
         return f"<FSA: {len(self.transitions)} transitions>"
