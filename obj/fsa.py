@@ -35,12 +35,6 @@ class FSA:
             self.start,
             self.ends.copy())
 
-    def valid(self):
-        return self.start != None and self.ends != None
-
-    def used_alphabet(self):
-        return set(map(lambda t: t.letter, self.transitions))
-
     # ==================transitions==================
     # transition doesn't need a special getter, regular is fine
 
@@ -49,10 +43,20 @@ class FSA:
         self.transitions.add(transition)
 
     # ==================other properties==================
+
+    def valid(self):
+        """return whether graph can be rendered / is valid"""
+        return self.start != None and self.ends != None
+
+    def used_alphabet(self):
+        """return set of all alphabet used in transitions"""
+        return set(map(lambda t: t.letter, self.transitions))
+
     def states(self, transitions=None) -> frozenset[str]:
-        # return list of states
-        # from getting all transitions
-        # can input transitions for testing
+        """return set of all states used in transitions
+
+        `transitions` argument is for unit testing
+        """
         transitions = transitions or self.transitions
         states: set[str] = reduce(
             lambda acc, tr: acc | {tr.start, tr.end},
