@@ -12,7 +12,6 @@ parser.add_argument("path", metavar="txt_path", type=str, help="Path to the *.tx
 cmd_args = parser.parse_args()
 print()
 
-path = Path(cmd_args.path)
 
 # =========================parse text to graph=========================
 def _error(msg: str, line=None):
@@ -21,7 +20,7 @@ def _error(msg: str, line=None):
     raise Exception(msg)
 
 
-def _find_text_args(lines: list[str]):
+def _find_lines_args(lines: list[str]):
     args: dict[str, Union[list[str], str]]
     args = {}
     for line in lines:
@@ -42,46 +41,34 @@ def _find_text_args(lines: list[str]):
     return args
 
 
+path = Path(cmd_args.path)
+
 with open(path, "r") as f:
     lines = f.readlines()
 
-args = _find_text_args(lines)
-text_format = args["format"]
+args = _find_lines_args(lines)
 
-if text_format.lower() == "informal":
-    g = tools.fromtext._informal_to_fsa(lines)
+if args["format"].lower() == "informal":
+    graph = tools.fromtext._informal_to_fsa(lines)
 else:
-    _error(f"Unknown text format '{text_format}'!")
+    _error(f"Unknown text format '{args['format']}'!")
 
 
 # =========================process graph=========================
 actions: list[str]
 actions = args["action"]
 
-processors = {
+proc_funcs = {
     "render": processors.render.process,
     "clone": processors.clone.process,
     "deterministic": processors.deterministic.process,
 }
 
-if "render" in actions:
-    actions.remove("render")
-    output_path = path.with_name(f"{path.stem}_render.gv")
-    print("Render: Starting...")
-    processors.render.render(g, filename=str(output_path))
-    print("Render: Success!")
-elif "deterministic" in actions:
-    actions.remove("deterministic")
-    print("Deterministic: Starting...")
-    print("Deterministic: Success!")
-elif "clone" in actions:
-    actions.remove("clone")
-    print("Clone: Starting...")
-    output_path = path.with_stem(f"{path.stem}_clone")
-    with open(output_path, "w") as f:
-        f.write(g.to_informal())
-    print("Clone: Success!")
-
-if len(actions) != 0:
-    print(f"Skipping unrecognised actions: {', '.join(actions)}")
-
+for action in actions:
+    func = proc_funcs.get(action.lower())
+    if func:
+        print(f"{action.capitalize()}: Starting...")
+        func(graph, path)
+        print(f"{action.capitalize()}: Success!")
+    else:
+        print(f"Unknown action '{action}'!")

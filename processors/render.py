@@ -1,5 +1,5 @@
 from graphviz import Digraph
-from obj.fsa import FSA
+from obj.fsa import FSA, Transition
 from pathlib import Path
 
 
@@ -20,8 +20,23 @@ def render(graph: FSA, combined=False, filename: str="fsa.gv") -> None:
     for state in graph.ends:
         dg.node(state, shape='doublecircle')
     # create edges
-    iter_transitions = graph.combined_transitions() if combined else graph.transitions
+    iter_transitions = combine_transitions(graph.transitions) if combined else graph.transitions
     for transition in sorted(iter_transitions):
         dg.edge(transition.start, transition.end, label=transition.letter)
 
     dg.view()
+
+
+def combine_transitions(transitions: set[Transition]):
+    from collections import defaultdict
+
+    def dict_to_transitions(pair, letters):
+        start, end = pair
+        return Transition(start, ", ".join(letters), end)
+
+    pairs_to_letters = defaultdict(list)
+    for transition in transitions:
+        pair = (transition.start, transition.end)
+        pairs_to_letters[pair].append(transition.letter)
+
+    return (dict_to_transitions(k, v) for k, v in pairs_to_letters.items())
