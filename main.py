@@ -58,11 +58,16 @@ else:
 actions: list[str]
 actions = args["action"]
 
+import tools.common as com
+
 proc_funcs = {
     "render": processors.render.process,
+    "render_combined": processors.render.process_combined,
     "clone": processors.clone.process,
     "deterministic": processors.deterministic.process,
+    "transition_table": lambda graph, path: print(com.transition_table(graph))
 }
+
 
 for action in actions:
     func = proc_funcs.get(action.lower())
@@ -70,5 +75,6 @@ for action in actions:
         print(f"{action.capitalize()}: Starting...")
         func(graph, path)
         print(f"{action.capitalize()}: Success!")
+        print()
     else:
         print(f"Unknown action '{action}'!")
