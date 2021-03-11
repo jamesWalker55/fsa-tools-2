@@ -87,9 +87,13 @@ class TransitionTable(Table):
         self.states = set()
 
     def __getitem__(self, state: frozenset[str]):
-        if not isinstance(state, frozenset):
-            raise KeyError(f"TransitionTable is indexed by frozenset, not {type(state)}!")
-        return super().__getitem__(("state", state))[0]
+        if isinstance(state, frozenset):
+            return super().__getitem__(("state", state))[0]
+        elif isinstance(state, set):
+            return super().__getitem__(("state", set(state)))[0]
+        elif isinstance(state, str):
+            return super().__getitem__(("state", frozenset([state])))[0]
+        raise TypeError(f"TransitionTable is indexed by frozenset/set/str, not {type(state)}!")
 
     def add_empty_state_row(self, state: frozenset[str]):
         """add a row with `state` as first column, rest as empty sets"""
@@ -115,7 +119,36 @@ class TransitionTable(Table):
         index = self.index_of(letter)
         self[start][index] = end
 
+    def freeze(self):
+        """freezes all sets in the table"""
+        for row in self.rows:
+            for i, cell in enumerate(row):
+                if isinstance(cell, set):
+                    row[i] = frozenset(cell)
 
+    def combined_state_rows(self, *states: tuple[frozenset[str]]):
+        """return combined rows given the states"""
+        if not all(map(_is_frozenset_or_set, states)):
+            raise KeyError("Input states must be frozensets/sets!")
+        states = map(frozenset, states)
+        to_combine = []
+        for state in states:
+            to_combine.append(self[state])
+        combined = list(zip(*to_combine))
+        for i, sets in enumerate(combined):
+            combined[i] = frozenset().union(*combined[i])
+        return combined
+
+    def state_recorded(self, state):
+        """return whether state is recorded in `state` column"""
+        try:
+            self[state]
+            return True
+        except KeyError:
+            return False
+
+def _is_frozenset_or_set(obj):
+    return isinstance(obj, frozenset) or isinstance(obj, set)
 
 
 if __name__ == '__main__':
@@ -133,4 +166,14 @@ if __name__ == '__main__':
     a.add_transition(Transition(*"q0 a q1".split()))
     a.add_transition(Transition(*"q0 b q1".split()))
     a.add_transition(Transition(*"q1 b q0".split()))
+    a.add_transition(Transition(*"q2 a q1".split()))
+    a.freeze()
     print(a)
+    fs = lambda s: frozenset([s])
+    print(f"{a.combined_state_rows(fs('q0'))}")
+    print(f"{a.combined_state_rows(fs('q1'))}")
+    print(f"{a.combined_state_rows(fs('q2'), fs('q1'))}")
+    print(f"{a.combined_state_rows(fs('q0'), fs('q2'), fs('q1'))}")
+    print(a.state_recorded('q1'))
+    print(a.state_recorded('q2'))
+    print(a.state_recorded('q3'))
