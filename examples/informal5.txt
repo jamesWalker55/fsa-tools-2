@@ -1,0 +1,18 @@
+# a deterministic graph
+# not complete or minimal
+
+format informal
+action render
+
+start 0
+end 12 012
+0 a 0
+0 b 1
+1 a 01
+1 b 12
+01 a 01
+01 b 12
+12 a 012
+12 b 12
+012 a 012
+012 b 12

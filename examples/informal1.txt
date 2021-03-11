@@ -1,0 +1,14 @@
+# deterministic graph
+
+format informal
+action render
+
+start q0
+end q1 q1
+q0 b q1
+q1 a q1
+q1 b q2
+q2 a q2
+q2 b q1
+q1 a q1
+q1 b q2

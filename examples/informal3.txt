@@ -1,0 +1,14 @@
+# this is a test comment
+# comments must start at beginning of line
+
+format informal
+action render
+
+start x
+end y z
+x a x
+x b x
+x a y
+x a z
+y b y
+z c z

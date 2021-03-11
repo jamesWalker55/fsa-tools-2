@@ -1,0 +1,15 @@
+# 3 states in a line
+
+format informal
+action render
+
+start q1
+end q3
+q1 a q1
+q1 b q1
+q1 a q2
+q2 a q2
+q2 b q2
+q2 b q3
+q3 a q3
+q3 b q3
