@@ -1,5 +1,5 @@
-# this is a test comment
-# comments must start at beginning of line
+# non-deterministic
+# multiple end states
 
 format informal
 action render
