@@ -1,3 +1,11 @@
+# Allowing running this file directly
+if __name__ == "__main__":
+    import sys
+    sys.path.append("../")
+
+from obj.fsa import Transition
+from typing import Union
+
 class Table:
     def __init__(self, headers: list[str]):
         self.labels = headers
@@ -62,13 +70,53 @@ class Table:
         return tuple(map(lambda row, i=index: row_get_val(row, i), self.rows))
 
     def column_widths(self):
+        """return tuple of string width of each column"""
         widths = [0 for i in range(self.num_columns)]
         for row in ([list(self.labels)] + self.rows):
             for i in range(self.num_columns):
                 width = len(str(row[i]))
                 widths[i] = width if width > widths[i] else widths[i]
         return widths
-            
+
+
+class TransitionTable(Table):
+    def __init__(self, alphabet: list[str]):
+        super().__init__(["state"] + alphabet)
+        self.num_letters = len(alphabet)
+        # record all added states
+        self.states = set()
+
+    def __getitem__(self, state: frozenset[str]):
+        if not isinstance(state, frozenset):
+            raise KeyError(f"TransitionTable is indexed by frozenset, not {type(state)}!")
+        return super().__getitem__(("state", state))[0]
+
+    def add_empty_state_row(self, state: frozenset[str]):
+        """add a row with `state` as first column, rest as empty sets"""
+        # add to record
+        self.states.add(state)
+        # create then add row
+        empty_row = [state] + [set() for i in range(self.num_letters)]
+        self.add_row(empty_row)
+
+    def add_transition(self, transition: Transition):
+        start = frozenset([transition.start])
+        self.add_destination(start, transition.letter, transition.end)
+
+    def add_destination(self, start: frozenset[str], letter: str, end: str):
+        if start not in self.states:
+            self.add_empty_state_row(start)
+        index = self.index_of(letter)
+        self[start][index].add(end)
+
+    def set_destination(self, start: frozenset[str], letter: str, end: frozenset[str]):
+        if start not in self.states:
+            self.add_empty_state_row(start)
+        index = self.index_of(letter)
+        self[start][index] = end
+
+
+
 
 if __name__ == '__main__':
 
@@ -80,3 +128,9 @@ if __name__ == '__main__':
     t["i",3][0][2] = "blackaaaaa"
 
     c = t.copy_column("color")
+
+    a = TransitionTable("a b c".split())
+    a.add_transition(Transition(*"q0 a q1".split()))
+    a.add_transition(Transition(*"q0 b q1".split()))
+    a.add_transition(Transition(*"q1 b q0".split()))
+    print(a)
