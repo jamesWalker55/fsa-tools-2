@@ -1,8 +1,11 @@
 import tools.fromtext
-import tools.render
+import processors.render
+import processors.clone
+import processors.deterministic
 
 import argparse
 from pathlib import Path
+from typing import Union
 
 parser = argparse.ArgumentParser(description="Processes a *.txt file containing graph information.")
 parser.add_argument("path", metavar="txt_path", type=str, help="Path to the *.txt file to process")
@@ -19,6 +22,7 @@ def _error(msg: str, line=None):
 
 
 def _find_text_args(lines: list[str]):
+    args: dict[str, Union[list[str], str]]
     args = {}
     for line in lines:
         if line.strip().startswith("format "):
@@ -54,10 +58,29 @@ else:
 actions: list[str]
 actions = args["action"]
 
+processors = {
+    "render": processors.render.process,
+    "clone": processors.clone.process,
+    "deterministic": processors.deterministic.process,
+}
+
 if "render" in actions:
     actions.remove("render")
     output_path = path.with_name(f"{path.stem}_render.gv")
-    tools.render.render(g, filename=str(output_path))
+    print("Render: Starting...")
+    processors.render.render(g, filename=str(output_path))
+    print("Render: Success!")
+elif "deterministic" in actions:
+    actions.remove("deterministic")
+    print("Deterministic: Starting...")
+    print("Deterministic: Success!")
+elif "clone" in actions:
+    actions.remove("clone")
+    print("Clone: Starting...")
+    output_path = path.with_stem(f"{path.stem}_clone")
+    with open(output_path, "w") as f:
+        f.write(g.to_informal())
+    print("Clone: Success!")
 
 if len(actions) != 0:
     print(f"Skipping unrecognised actions: {', '.join(actions)}")

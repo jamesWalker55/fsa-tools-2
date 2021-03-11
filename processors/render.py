@@ -1,5 +1,11 @@
 from graphviz import Digraph
 from obj.fsa import FSA
+from pathlib import Path
+
+
+def process(graph: FSA, original_path: Path):
+    output_path = original_path.with_name(f"{original_path.stem}_render.gv")
+    render(graph, str(output_path))
 
 
 def render(graph: FSA, combined=False, filename: str="fsa.gv") -> None:
