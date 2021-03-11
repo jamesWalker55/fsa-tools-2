@@ -1,14 +1,16 @@
 # deterministic graph
+# has duplicate transitions (shouldn't matter as transitions is a set)
+# has duplicate ends (shouldn't matter as ends is also a set)
 
 format informal
-action render
+action transition_table deterministic
 
 start q0
 end q1 q1
 q0 b q1
 q1 a q1
+q1 a q1
+q1 b q2
 q1 b q2
 q2 a q2
 q2 b q1
-q1 a q1
-q1 b q2

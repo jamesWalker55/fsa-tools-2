@@ -1,0 +1,27 @@
+# this is for testing transition tables
+# this graph's table should look like this:
+
+# state |O      |P
+# q0    |q0, q1 |q0
+# q1    |q2     |
+# q2    |q2     |q2
+
+# after making it deterministic, it should look like this:
+
+# state    |o        |p
+# q0       |q0,q1    |q0
+# q0,q1    |q0,q1,q2 |q0
+# q0,q1,q2 |q0,q1,q2 |q0,q2
+# q0,q2    |q0,q1,q2 |q0,q2
+
+format informal
+action transition_table deterministic
+
+start q0
+end q2
+q0 p q0
+q0 o q0
+q0 o q1
+q1 o q2
+q2 p q2
+q2 o q2

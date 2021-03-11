@@ -69,9 +69,25 @@ class FSA:
 
     def to_informal(self):
         """return string with informal representation of self"""
-        informal = "format informal\n\n"
+        informal = "format informal\naction render\n\n"
         informal += f"start {self.start}\n"
         informal += f"end {' '.join(sorted(self.ends))}\n"
         for tr in sorted(self.transitions):
             informal += f"{tr.start} {tr.letter} {tr.end}\n"
         return informal
+
+    def formalise(self) -> str:
+        def iterable_to_string(ss):
+            if isinstance(ss, set) or isinstance(ss, frozenset):
+                ss = sorted(ss)
+            return "{" + ",".join(ss) + "}"
+
+        alphabet = iterable_to_string(self.used_alphabet())
+        all_states = set(x for tr in self.transitions for x in [tr.start, tr.end])
+        all_states = iterable_to_string(all_states)
+        transitions = sorted(f"({tr.start},{tr.letter},{tr.end})" for tr in self.transitions)
+        transitions = iterable_to_string(transitions)
+        initial_state = self.start
+        final_states = iterable_to_string(self.ends)
+        output = (alphabet, all_states, transitions, initial_state, final_states)
+        return iterable_to_string(output)

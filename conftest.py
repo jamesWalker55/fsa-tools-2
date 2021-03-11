@@ -4,7 +4,7 @@ import tools.render
 
 path = "graph.txt"
 
-with open(path, "r") as f:
+with open(path, "r", encoding='utf-8') as f:
     text = f.read()
 
 # g = tools.fromtext.lines_to_fsa(text.split("\n"))

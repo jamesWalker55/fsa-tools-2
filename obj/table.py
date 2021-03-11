@@ -113,6 +113,12 @@ class TransitionTable(Table):
         index = self.index_of(letter)
         self[start][index].add(end)
 
+    def add_row(self, row):
+        if not all(map(_is_frozenset_or_set, row)):
+            raise KeyError("Input cells must all be frozensets/sets!")
+        self.states.add(row[0])
+        return super().add_row(row)
+
     def set_destination(self, start: frozenset[str], letter: str, end: frozenset[str]):
         if start not in self.states:
             self.add_empty_state_row(start)
@@ -147,6 +153,16 @@ class TransitionTable(Table):
         except KeyError:
             return False
 
+    def to_markdown(self):
+        def set_to_string(s):
+            return ",".join(sorted(s))
+        md = "|".join(self.labels) + "\n"
+        md += "|".join(["-" for i in range(len(self.labels))]) + "\n"
+        for row in self.rows:
+            md += "|".join(map(set_to_string, row))
+            md += "\n"
+        return md
+
 def _is_frozenset_or_set(obj):
     return isinstance(obj, frozenset) or isinstance(obj, set)
 
@@ -170,10 +186,4 @@ if __name__ == '__main__':
     a.freeze()
     print(a)
     fs = lambda s: frozenset([s])
-    print(f"{a.combined_state_rows(fs('q0'))}")
-    print(f"{a.combined_state_rows(fs('q1'))}")
-    print(f"{a.combined_state_rows(fs('q2'), fs('q1'))}")
-    print(f"{a.combined_state_rows(fs('q0'), fs('q2'), fs('q1'))}")
-    print(a.state_recorded('q1'))
-    print(a.state_recorded('q2'))
-    print(a.state_recorded('q3'))
+    print(a.to_markdown())

@@ -1,8 +1,15 @@
 # non-deterministic
 # multiple end states
 
+# transition table:
+#  state |               a |     b |     c
+# =========================================
+#      x | {'x', 'y', 'z'} | {'x'} | set()
+#      y |           set() | {'y'} | set()
+#      z |           set() | set() | {'z'}
+
 format informal
-action render
+action transition_table deterministic render
 
 start x
 end y z

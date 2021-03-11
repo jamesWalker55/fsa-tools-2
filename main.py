@@ -2,6 +2,8 @@ import tools.fromtext
 import processors.render
 import processors.clone
 import processors.deterministic
+import processors.transitiontable
+import processors.formalise
 
 import argparse
 from pathlib import Path
@@ -43,29 +45,33 @@ def _find_lines_args(lines: list[str]):
 
 path = Path(cmd_args.path)
 
-with open(path, "r") as f:
-    lines = f.readlines()
+with open(path, "r", encoding='utf-8') as f:
+    lines = f.read().splitlines()
 
 args = _find_lines_args(lines)
 
+print(f"Parsing with format as '{args['format']}'")
+
 if args["format"].lower() == "informal":
-    graph = tools.fromtext._informal_to_fsa(lines)
+    graph = tools.fromtext.informal_to_fsa(lines)
+elif args["format"].lower() == "formal":
+    graph = tools.fromtext.formal_to_fsa(lines)
 else:
     _error(f"Unknown text format '{args['format']}'!")
 
+print("Parsing success!")
 
 # =========================process graph=========================
 actions: list[str]
 actions = args["action"]
-
-import tools.common as com
 
 proc_funcs = {
     "render": processors.render.process,
     "render_combined": processors.render.process_combined,
     "clone": processors.clone.process,
     "deterministic": processors.deterministic.process,
-    "transition_table": lambda graph, path: print(com.transition_table(graph))
+    "transition_table": processors.transitiontable.process,
+    "formalise": processors.formalise.process,
 }
 
 
@@ -77,4 +83,4 @@ for action in actions:
         print(f"{action.capitalize()}: Success!")
         print()
     else:
-        print(f"Unknown action '{action}'!")
+        print(f"Unknown action '{action}'")

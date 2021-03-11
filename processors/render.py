@@ -28,7 +28,9 @@ def render(graph: FSA, combined: bool=False, filename: str="fsa.gv") -> None:
     for transition in sorted(iter_transitions):
         dg.edge(transition.start, transition.end, label=transition.letter)
 
-    dg.view()
+    # dg.view()
+    # dg.save()
+    dg.render()
 
 
 def combine_transitions(transitions: set[Transition]):

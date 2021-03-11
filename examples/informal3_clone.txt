@@ -1,0 +1,10 @@
+format informal
+
+start x
+end y z
+z c z
+x a y
+y b y
+x a x
+x b x
+x a z

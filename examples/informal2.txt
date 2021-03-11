@@ -1,7 +1,7 @@
 # non-deterministic graph
 
 format informal
-action render
+action transition_table deterministic
 
 start q0
 end q3

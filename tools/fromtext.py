@@ -1,6 +1,5 @@
 from obj.fsa import FSA, EPSILON
 
-
 META_KEYWORDS = ("format", "action", "#")
 
 
@@ -10,7 +9,7 @@ def _error(line, msg: str):
     raise Exception(msg)
 
 # ========================parse with informal========================
-def _informal_to_fsa(lines: list[str]) -> FSA:
+def informal_to_fsa(lines: list[str]) -> FSA:
     graph = FSA()
     has_start = False
     has_end = False
@@ -44,4 +43,24 @@ def _informal_to_fsa(lines: list[str]) -> FSA:
                 graph.add_transition(start, letter, end)
     if not (has_start or has_end):
         raise Exception("No start/end state in input text!")
+    return graph
+
+# ========================parse with formal========================
+def formal_to_fsa(lines: list[str]) -> FSA:
+    import re
+    from pprint import pprint
+    lines = " ".join(lines)
+    match = re.search(r"{(.+?)}.*?{(.+?)}.*?{(.+?)},(.+?),.*{(.+?)}", lines)
+    # parsing text
+    # alphabet = list(x.strip() for x in match.group(1).split(","))
+    # all_states = list(x.strip() for x in match.group(2).split(","))
+    transitions = re.findall(r"\((.+?)\)", match.group(3))
+    transitions = [[t.strip() for t in tran.split(",")] for tran in transitions]
+    initial_state = match.group(4).strip()
+    final_states = list(x.strip() for x in match.group(5).split(","))
+    graph = FSA()
+    graph.start = initial_state
+    graph.ends = final_states
+    for tran in transitions:
+        graph.add_transition(*tran)
     return graph

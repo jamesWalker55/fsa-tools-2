@@ -1,7 +1,7 @@
 # very simple deterministic graph
 
 format informal
-action render
+action transition_table deterministic render
 
 start 0
 end s
