@@ -67,6 +67,15 @@ class FSA:
         )
         return frozenset(states)
 
+    def to_informal(self):
+        """return string with informal representation of self"""
+        informal = "format informal\n"
+        informal += f"start {self.start}\n"
+        informal += f"end {' '.join(sorted(self.start))}\n"
+        for tr in self.transitions:
+            informal += f"{tr.start} {tr.letter} {tr.end}\n"
+        return informal
+
 
 if __name__ == '__main__':
 
