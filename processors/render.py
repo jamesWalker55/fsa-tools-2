@@ -3,12 +3,16 @@ from obj.fsa import FSA, Transition
 from pathlib import Path
 
 
-def process(graph: FSA, original_path: Path):
+def process(graph: FSA, original_path: Path, combined=False):
     output_path = original_path.with_name(f"{original_path.stem}_render.gv")
-    render(graph, str(output_path))
+    render(graph, filename=str(output_path))
 
 
-def render(graph: FSA, combined=False, filename: str="fsa.gv") -> None:
+def process_combined(graph: FSA, original_path: Path):
+    process(graph, original_path, combined=True)
+
+
+def render(graph: FSA, combined: bool=False, filename: str="fsa.gv") -> None:
     dg = Digraph('FSA', filename=filename, format="png")
     # settings
     dg.attr(rankdir='LR', dpi="150", ordering="out")
