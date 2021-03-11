@@ -69,36 +69,9 @@ class FSA:
 
     def to_informal(self):
         """return string with informal representation of self"""
-        informal = "format informal\n"
+        informal = "format informal\n\n"
         informal += f"start {self.start}\n"
         informal += f"end {' '.join(sorted(self.start))}\n"
         for tr in self.transitions:
             informal += f"{tr.start} {tr.letter} {tr.end}\n"
         return informal
-
-
-if __name__ == '__main__':
-
-    sigma = "{(q0 , a, q0), (q0 , b, q0 ), (q0 , b, q1 ), (q1, a, q2 ), (q1 , b, q2 )}"
-    a_formal = "({a, b}, {q0 , q1 , q2 }, "+sigma+", q0, {q1 , q2 })"
-
-    a_informal = """
-    start 0
-    end 1 2
-    0 a 0
-    0 b 0
-    0 b 1
-    1 a 2
-    1 b 2
-    """
-
-    b_informal = """
-    start 0
-    end 0
-    0 e 1
-    0 b 2
-    1 a 0
-    2 a 1
-    2 b 1
-    2 a 2
-    """
