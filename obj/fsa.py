@@ -71,7 +71,7 @@ class FSA:
         """return string with informal representation of self"""
         informal = "format informal\n\n"
         informal += f"start {self.start}\n"
-        informal += f"end {' '.join(sorted(self.start))}\n"
+        informal += f"end {' '.join(sorted(self.ends))}\n"
         for tr in self.transitions:
             informal += f"{tr.start} {tr.letter} {tr.end}\n"
         return informal
