@@ -5,6 +5,11 @@ if __name__ == "__main__":
 
 from obj.fsa import Transition
 from typing import Union
+from obj.fsa import FSA
+
+def _is_frozenset_or_set(obj):
+    return isinstance(obj, frozenset) or isinstance(obj, set)
+
 
 class Table:
     def __init__(self, headers: list[str]):
@@ -163,9 +168,11 @@ class TransitionTable(Table):
             md += "\n"
         return md
 
-def _is_frozenset_or_set(obj):
-    return isinstance(obj, frozenset) or isinstance(obj, set)
 
+class MinimiseTable(Table):
+    def __init__(self, graph: FSA):
+        self.states = sorted(graph.states())
+        super().__init__(["state"] + self.states)
 
 if __name__ == '__main__':
 
