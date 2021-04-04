@@ -69,7 +69,7 @@ class FSA:
 
     def to_informal(self):
         """return string with informal representation of self"""
-        informal = "format informal\naction render\n\n"
+        informal = "format informal\naction render_in\n\n"
         informal += f"start {self.start}\n"
         informal += f"end {' '.join(sorted(self.ends))}\n"
         for tr in sorted(self.transitions):
