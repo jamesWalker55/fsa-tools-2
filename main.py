@@ -16,6 +16,20 @@ parser.add_argument("skip", metavar="skip_processing", type=int, help="Whether t
 cmd_args = parser.parse_args()
 print()
 
+# =========================define fuctions=========================
+
+proc_funcs = {
+    "render": processors.render.process,
+    "render_combined": processors.render.process_combined,
+    "render_in": processors.render.process_in,
+    "render_in_combined": processors.render.process_in_combined,
+    "clone": processors.clone.process,
+    "deterministic": processors.deterministic.process,
+    "transition_table": processors.transitiontable.process,
+    "formalise": processors.formalise.process,
+    "unname": processors.unname.process,
+}
+
 
 # =========================parse text to graph=========================
 def _error(msg: str, line=None):
@@ -66,18 +80,6 @@ print("Parsing success!")
 # =========================process graph=========================
 actions: list[str]
 actions = args["action"]
-
-proc_funcs = {
-    "render": processors.render.process,
-    "render_combined": processors.render.process_combined,
-    "render_in": processors.render.process_in,
-    "render_in_combined": processors.render.process_in_combined,
-    "clone": processors.clone.process,
-    "deterministic": processors.deterministic.process,
-    "transition_table": processors.transitiontable.process,
-    "formalise": processors.formalise.process,
-    "unname": processors.unname.process,
-}
 
 if cmd_args.skip == 1:
     print("skip is intended for use with python interactive mode")
