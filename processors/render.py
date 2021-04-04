@@ -8,14 +8,23 @@ def process(graph: FSA, original_path: Path, combined=False):
     render(graph, filename=str(output_path))
 
 
+def process_in(graph: FSA, original_path: Path, combined=False):
+    output_path = original_path.with_name(f"{original_path.stem}_render.gv")
+    render(graph, filename=str(output_path), ordering="in")
+
+
 def process_combined(graph: FSA, original_path: Path):
     process(graph, original_path, combined=True)
 
 
-def render(graph: FSA, combined: bool=False, filename: str="fsa.gv") -> None:
+def process_in_combined(graph: FSA, original_path: Path):
+    process_in(graph, original_path, combined=True)
+
+
+def render(graph: FSA, combined: bool=False, filename: str="fsa.gv", ordering: str="out") -> None:
     dg = Digraph('FSA', filename=filename, format="png")
     # settings
-    dg.attr(rankdir='LR', dpi="150", ordering="out")
+    dg.attr(rankdir='LR', dpi="150", ordering=ordering)
     dg.attr('node', shape='circle')
     # start arrow
     dg.node("_start_", label="", shape="point")
