@@ -4,6 +4,7 @@ import processors.clone
 import processors.deterministic
 import processors.transitiontable
 import processors.formalise
+import processors.unname
 
 import argparse
 from pathlib import Path
@@ -11,6 +12,7 @@ from typing import Union
 
 parser = argparse.ArgumentParser(description="Processes a *.txt file containing graph information.")
 parser.add_argument("path", metavar="txt_path", type=str, help="Path to the *.txt file to process")
+parser.add_argument("skip", metavar="skip_processing", type=int, help="Whether to enable debug mode or not")
 cmd_args = parser.parse_args()
 print()
 
@@ -68,19 +70,28 @@ actions = args["action"]
 proc_funcs = {
     "render": processors.render.process,
     "render_combined": processors.render.process_combined,
+    "render_in": processors.render.process_in,
+    "render_in_combined": processors.render.process_in_combined,
     "clone": processors.clone.process,
     "deterministic": processors.deterministic.process,
     "transition_table": processors.transitiontable.process,
     "formalise": processors.formalise.process,
+    "unname": processors.unname.process,
 }
 
-
-for action in actions:
-    func = proc_funcs.get(action.lower())
-    if func:
-        print(f"{action.capitalize()}: Starting...")
-        func(graph, path)
-        print(f"{action.capitalize()}: Success!")
-        print()
-    else:
-        print(f"Unknown action '{action}'")
+if cmd_args.skip == 1:
+    print("skip is intended for use with python interactive mode")
+    print("Skipping all processing")
+    print(f"    `graph`: {graph}")
+    print(f"    `path`: {path}")
+    from obj.fsa import FSA
+else:
+    for action in actions:
+        func = proc_funcs.get(action.lower())
+        if func:
+            print(f"{action.capitalize()}: Starting...")
+            func(graph, path)
+            print(f"{action.capitalize()}: Success!")
+            print()
+        else:
+            print(f"Unknown action '{action}'")
