@@ -5,12 +5,12 @@ from pathlib import Path
 
 def process(graph: FSA, original_path: Path, combined=False):
     output_path = original_path.with_name(f"{original_path.stem}_render.gv")
-    render(graph, filename=str(output_path))
+    render(graph, filename=str(output_path), combined=combined)
 
 
 def process_in(graph: FSA, original_path: Path, combined=False):
     output_path = original_path.with_name(f"{original_path.stem}_render.gv")
-    render(graph, filename=str(output_path), ordering="in")
+    render(graph, filename=str(output_path), combined=combined, ordering="in")
 
 
 def process_combined(graph: FSA, original_path: Path):
