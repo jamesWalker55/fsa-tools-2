@@ -2,3 +2,5 @@
 workspace.code-workspace
 **/*.gv
 **/*.png
+.idea
+.vscode
