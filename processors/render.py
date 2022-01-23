@@ -2,6 +2,8 @@ from graphviz import Digraph
 from obj.fsa import FSA, Transition
 from pathlib import Path
 
+# todo: add processor to remove epsilon-transitions
+
 
 def process(graph: FSA, original_path: Path, combined=False):
     output_path = original_path.with_name(f"{original_path.stem}_render.gv")
