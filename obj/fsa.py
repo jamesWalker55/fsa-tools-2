@@ -33,9 +33,10 @@ class FSA:
     def clone(self):
         return FSA(
             self.transitions.copy(),
-            self.alphabet.copy() if self._alphabet else None,
+            self.alphabet if self.alphabet else self.used_alphabet(),
             self.start,
-            self.ends.copy())
+            self.ends.copy(),
+        )
 
     # ==================transitions==================
     # transition doesn't need a special getter, regular is fine
