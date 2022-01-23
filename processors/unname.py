@@ -5,8 +5,9 @@ from pathlib import Path
 def process(graph: FSA, original_path: Path):
     unnamed_graph = unname(graph)
     output_path = original_path.with_stem(f"{original_path.stem}_unname")
-    with open(output_path, "w", encoding='utf-8') as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(unnamed_graph.to_informal())
+
 
 def unname(graph: FSA) -> FSA:
     state_rename_map = {}
@@ -26,6 +27,3 @@ def unname(graph: FSA) -> FSA:
             state_rename_map[tr.start], tr.letter, state_rename_map[tr.end]
         )
     return unnamed_graph
-
-
-

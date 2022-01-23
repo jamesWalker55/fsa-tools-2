@@ -3,14 +3,16 @@ from pathlib import Path
 from processors.transitiontable import transition_table
 from obj.table import TransitionTable
 
+
 def process(graph: FSA, original_path: Path):
     det_table = deterministic_table(graph)
     print(det_table)
-    
+
     graph = deterministic_table_to_graph(det_table, graph)
     output_path = original_path.with_name(f"{original_path.stem}_det.txt")
-    with open(output_path, "w", encoding='utf-8') as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(graph.to_informal())
+
 
 def deterministic_table(graph: FSA):
     tr_table = transition_table(graph)
@@ -43,7 +45,7 @@ def deterministic_table_to_graph(tr_table: TransitionTable, original_graph: FSA)
     for row in tr_table.rows:
         start = set_to_string(row[0])
         for i, letter in enumerate(letters):
-            end = row[i+1]
+            end = row[i + 1]
             if len(end) == 0:
                 continue
             end = set_to_string(end)

@@ -8,6 +8,7 @@ def _error(line, msg: str):
         msg += f'\nError at: "{line}"'
     raise Exception(msg)
 
+
 # ========================parse with informal========================
 def informal_to_fsa(lines: list[str]) -> FSA:
     graph = FSA()
@@ -45,10 +46,12 @@ def informal_to_fsa(lines: list[str]) -> FSA:
         raise Exception("No start/end state in input text!")
     return graph
 
+
 # ========================parse with formal========================
 def formal_to_fsa(lines: list[str]) -> FSA:
     import re
     from pprint import pprint
+
     lines = " ".join(lines)
     match = re.search(r"{(.+?)}.*?{(.+?)}.*?{(.+?)},(.+?),.*{(.+?)}", lines)
     # parsing text

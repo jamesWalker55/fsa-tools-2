@@ -12,7 +12,7 @@ EPSILON = "ε"
 
 class FSA:
     """A FSA representation
-    
+
     ```
     transitions: set[Transition]
     alphabet: set[str]
@@ -65,9 +65,7 @@ class FSA:
         """
         transitions = transitions or self.transitions
         states: set[str] = reduce(
-            lambda acc, tr: acc | {tr.start, tr.end},
-            transitions,
-            set()
+            lambda acc, tr: acc | {tr.start, tr.end}, transitions, set()
         )
         return frozenset(states)
 
@@ -89,7 +87,9 @@ class FSA:
         alphabet = iterable_to_string(self.used_alphabet())
         all_states = set(x for tr in self.transitions for x in [tr.start, tr.end])
         all_states = iterable_to_string(all_states)
-        transitions = sorted(f"({tr.start},{tr.letter},{tr.end})" for tr in self.transitions)
+        transitions = sorted(
+            f"({tr.start},{tr.letter},{tr.end})" for tr in self.transitions
+        )
         transitions = iterable_to_string(transitions)
         initial_state = self.start
         final_states = iterable_to_string(self.ends)

@@ -21,19 +21,23 @@ def process_in_combined(graph: FSA, original_path: Path):
     process_in(graph, original_path, combined=True)
 
 
-def render(graph: FSA, combined: bool=False, filename: str="fsa.gv", ordering: str="out") -> None:
-    dg = Digraph('FSA', filename=filename, format="png")
+def render(
+    graph: FSA, combined: bool = False, filename: str = "fsa.gv", ordering: str = "out"
+) -> None:
+    dg = Digraph("FSA", filename=filename, format="png")
     # settings
-    dg.attr(rankdir='LR', dpi="150", ordering=ordering)
-    dg.attr('node', shape='circle')
+    dg.attr(rankdir="LR", dpi="150", ordering=ordering)
+    dg.attr("node", shape="circle")
     # start arrow
     dg.node("_start_", label="", shape="point")
-    dg.edge('_start_', graph.start)
+    dg.edge("_start_", graph.start)
     # set shape for end states
     for state in graph.ends:
-        dg.node(state, shape='doublecircle')
+        dg.node(state, shape="doublecircle")
     # create edges
-    iter_transitions = combine_transitions(graph.transitions) if combined else graph.transitions
+    iter_transitions = (
+        combine_transitions(graph.transitions) if combined else graph.transitions
+    )
     for transition in sorted(iter_transitions):
         dg.edge(transition.start, transition.end, label=transition.letter)
 

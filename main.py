@@ -12,9 +12,18 @@ import argparse
 from pathlib import Path
 from typing import Union
 
-parser = argparse.ArgumentParser(description="Processes a *.txt file containing graph information.")
-parser.add_argument("path", metavar="txt_path", type=str, help="Path to the *.txt file to process")
-parser.add_argument("skip", metavar="skip_processing", type=int, help="Whether to enable debug mode or not")
+parser = argparse.ArgumentParser(
+    description="Processes a *.txt file containing graph information."
+)
+parser.add_argument(
+    "path", metavar="txt_path", type=str, help="Path to the *.txt file to process"
+)
+parser.add_argument(
+    "skip",
+    metavar="skip_processing",
+    type=int,
+    help="Whether to enable debug mode or not",
+)
 cmd_args = parser.parse_args()
 print()
 
@@ -54,7 +63,10 @@ def _find_lines_args(lines: list[str]):
         elif line.strip().startswith("action "):
             words = line.split()
             if len(words) < 2:
-                _error("Expected at least 1 word representing actions to perform!", line=line)
+                _error(
+                    "Expected at least 1 word representing actions to perform!",
+                    line=line,
+                )
             args["action"] = words[1:]
 
     if len(args.keys()) != 2:
@@ -65,7 +77,7 @@ def _find_lines_args(lines: list[str]):
 
 path = Path(cmd_args.path)
 
-with open(path, "r", encoding='utf-8') as f:
+with open(path, "r", encoding="utf-8") as f:
     lines = f.read().splitlines()
 
 args = _find_lines_args(lines)
