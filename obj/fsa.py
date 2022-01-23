@@ -45,6 +45,9 @@ class FSA:
         transition = Transition(str(start), str(letter), str(end))
         self.transitions.add(transition)
 
+    def remove_transition(self, tr: Transition) -> None:
+        self.transitions.remove(tr)
+
     # ==================other properties==================
 
     def valid(self):
