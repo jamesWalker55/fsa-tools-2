@@ -12,5 +12,9 @@ def transition_table(graph: FSA):
     table = TransitionTable(sorted(graph.used_alphabet()))
     for tr in graph.transitions:
         table.add_transition(tr)
+    all_states = set(graph.states())
+    no_tran_states = all_states - set(t.start for t in graph.transitions)
+    for state in no_tran_states:
+        table.add_row([frozenset([state])] + [set()] * (table.num_columns - 1))
     table.freeze()
     return table
