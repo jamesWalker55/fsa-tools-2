@@ -1,0 +1,37 @@
+# this is converted from the cfg:
+# S -> X | Y
+# X -> e | aYb
+# Y -> e | aXbb
+
+format informal
+action unname
+
+start init
+end ed
+
+# starting var
+init push(S$) main
+
+# letters
+main pop(a) ua
+ua a main
+main pop(b) ub
+ub b main
+
+# rule S
+main pop(S) subS
+subS push(X) main
+subS push(Y) main
+
+# rule X
+main pop(X) subX
+subX push(aYb) main
+subX e main
+
+# rule Y
+main pop(Y) subY
+subY push(aXbb) main
+subY e main
+
+# exit
+main pop($) ed

@@ -1,0 +1,35 @@
+format informal
+action render_in
+
+start qstart
+end qend
+
+qstart push($) qm
+
+# ================take an a/b================
+qa a qm
+qb b qm
+
+# ================empty stack (only have $)================
+qm pop($) only$1
+only$1 push($) only$2
+
+only$2 push(A) qa
+only$2 push(B) qb
+
+# ================stack has A at top================
+qm pop(A) onlyA1
+onlyA1 push(A) onlyA2
+
+onlyA2 push(A) qa
+onlyA2 pop(A) qb
+
+# ================stack has B at top================
+qm pop(B) onlyB1
+onlyB1 push(B) onlyB2
+
+onlyB2 push(B) qb
+onlyB2 pop(B) qa
+
+# ================empty stack (only have $)================
+qm pop($) qend

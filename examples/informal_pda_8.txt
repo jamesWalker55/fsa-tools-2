@@ -1,0 +1,27 @@
+# this is converted from the cfg:
+# S -> 0$0 | 1$1 | 0 | 1 | e
+
+format informal
+action unname
+
+start init
+end ed
+
+init push(S$) main
+
+# letters
+main pop(0) s0
+s0 0 main
+main pop(1) s1
+s1 1 main
+
+# rule S
+main pop(S) subS
+subS push(0$0) main
+subS push(1$1) main
+subS push(0) main
+subS push(1) main
+subS e main
+
+# exit
+main pop($) ed

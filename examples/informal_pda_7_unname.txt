@@ -1,0 +1,14 @@
+format informal
+action render_in
+
+start q0
+end q5
+q0 push(S$) q2
+q1 0 q2
+q2 pop($) q5
+q2 pop(0) q1
+q2 pop(1) q3
+q2 pop(S) q6
+q3 1 q2
+q6 push(0$1) q2
+q6 ε q2

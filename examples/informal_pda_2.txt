@@ -1,0 +1,39 @@
+# PDA 2
+# Hopefully this works
+
+format informal
+action render_in
+
+# start st
+# end ed
+
+# st push($) qa
+
+# qa a q1
+# q1 push(b) qa
+# qa e qb
+
+# qb b q2
+# q2 pop(b) qb
+# qb e qc
+
+# qc c qc
+
+# qc pop($) ed
+
+start q0
+end q6
+
+q0 push($) q1
+
+q1 a q2
+q2 push(b) q1
+q1 e q3
+
+q3 b q4
+q4 pop(b) q3
+q3 e q5
+
+q5 c q5
+
+q5 pop($) q6

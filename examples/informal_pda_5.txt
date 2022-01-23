@@ -1,0 +1,35 @@
+format informal
+action render_in
+
+start q0
+end q2
+
+q0 push($) q1
+
+# ================take an a/b================
+qa a q1
+qb b q1
+
+# ================empty stack (only have $)================
+q1 pop($) q2
+q2 push($) q3
+
+q3 push(A) qa
+q3 push(B) qb
+
+# ================stack has A at top================
+q1 pop(A) q4
+q4 push(A) q5
+
+q5 push(A) qa
+q5 pop(A) qb
+
+# ================stack has B at top================
+q1 pop(B) q6
+q6 push(B) q7
+
+q7 push(B) qb
+q7 pop(B) qa
+
+# ================empty stack (only have $)================
+# q1 pop($) q8
