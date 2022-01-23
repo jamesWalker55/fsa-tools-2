@@ -5,6 +5,7 @@ import processors.deterministic
 import processors.transitiontable
 import processors.formalise
 import processors.unname
+import processors.minimise
 
 import argparse
 from pathlib import Path
@@ -28,6 +29,7 @@ proc_funcs = {
     "transition_table": processors.transitiontable.process,
     "formalise": processors.formalise.process,
     "unname": processors.unname.process,
+    "minimise": processors.minimise.process,
 }
 
 
