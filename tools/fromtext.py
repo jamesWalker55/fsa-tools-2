@@ -60,7 +60,7 @@ def formal_to_fsa(lines: list[str]) -> FSA:
     transitions = re.findall(r"\((.+?)\)", match.group(3))
     transitions = [[t.strip() for t in tran.split(",")] for tran in transitions]
     initial_state = match.group(4).strip()
-    final_states = list(x.strip() for x in match.group(5).split(","))
+    final_states = set(x.strip() for x in match.group(5).split(","))
     graph = FSA()
     graph.start = initial_state
     graph.ends = final_states
