@@ -6,6 +6,7 @@ import processors.transitiontable
 import processors.formalise
 import processors.unname
 import processors.minimise
+import processors.epsilon
 
 import argparse
 from pathlib import Path
@@ -30,6 +31,7 @@ proc_funcs = {
     "formalise": processors.formalise.process,
     "unname": processors.unname.process,
     "minimise": processors.minimise.process,
+    "epsilon": processors.epsilon.process,
 }
 
 
