@@ -19,10 +19,10 @@ parser.add_argument(
     "path", metavar="txt_path", type=str, help="Path to the *.txt file to process"
 )
 parser.add_argument(
-    "skip",
-    metavar="skip_processing",
-    type=int,
+    "--skip-processing",
+    "-sp",
     help="Whether to enable debug mode or not",
+    action="store_true",
 )
 cmd_args = parser.parse_args()
 print()
@@ -97,7 +97,7 @@ print("Parsing success!")
 actions: list[str]
 actions = args["action"]
 
-if cmd_args.skip == 1:
+if cmd_args.skip_processing:
     print("skip is intended for use with python interactive mode")
     print("Skipping all processing")
     print(f"    `graph`: {graph}")
