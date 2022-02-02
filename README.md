@@ -89,3 +89,33 @@ After marking cells with exactly 1 final state:
 
 ...
 ```
+
+## The "informal" input format
+
+The "informal" input format contains the following:
+
+- one line stating the starting state
+  - `start STATE1`
+- one line stating the end state(s)
+  - `end STATE1 STATE2 STATE3`
+- all other lines are transitions from one state to another
+  - `STATE1 transition STATE2`
+
+```
+# some metadata
+format informal
+action render
+
+# start at the state called "hello"
+start hello
+
+# end at the state called "goodbye"
+end goodbye
+
+# add a transition from "hello" to "goodbye" using the letter "a"
+hello a goodbye
+```
+
+The above file generates this image:
+
+![](docs/hello_goodbye.png)
