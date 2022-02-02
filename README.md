@@ -41,7 +41,7 @@ q3 a q3
 q3 b q3
 ```
 
-After running the above file, it generates an image (`render`) and a new text file (`formalise`):
+After running the above file, it generates an image (`render` action) and a new text file (`formalise` action):
 
 > ![](docs/test_render.gv.png)
 > 
@@ -51,3 +51,41 @@ After running the above file, it generates an image (`render`) and a new text fi
 > 
 > {{a,b},{q1,q2,q3},{(q1,a,q1),(q1,a,q2),(q1,b,q1),(q2,a,q2),(q2,b,q2),(q2,b,q3),(q3,a,q3),(q3,b,q3)},q1,{q3}}
 > ```
+
+## Implemented actions
+
+These are the actions I implemented:
+
+- `render`: Render the graph.
+- `render_combined`: Render the graph while combining transitions from and to the same state.
+- `render_in`: Render the graph with an alternative positioning algorithm (order=in).
+- `render_in_combined`: Render the graph while combining transitions and with an alternative positioning algorithm.
+- `transition_table`: Generate a transition table of the input graph. Output is in Markdown format.
+- `deterministic`: Perform subset construction to create a deterministic version of the input graph.
+- `formalise`: Express the input graph using formal mathematical notation.
+- `unname`: Replace all state names with generic names (`q1`, `q2`, `q3`, ...).
+- `epsilon`: Remove epsilon transitions (ε) from the input graph.
+- `minimise`: Minimise the input graph using the minimisation routine.
+- `clone`: Clone the input graph to a new file. Use this as a template to create your own actions.
+
+Some actions output important information in the console output, like `minimise` which prints a table like this:
+
+```
+...
+
+Minimise: Starting...
+(x, x,y): One of them is an accepting state
+(x, x,y,z): One of them is an accepting state
+(x, z): One of them is an accepting state
+(x,y, x,y,z): One of them is an accepting state
+(x,y, z): One of them is an accepting state
+(x,y,z, z): One of them is an accepting state
+After marking cells with exactly 1 final state:
+   x,y | X |     |
+ x,y,z | X |     |
+     z | X |     |
+=========================
+ state | x | x,y | x,y,z
+
+...
+```
