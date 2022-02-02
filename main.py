@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(
     description="Processes a *.txt file containing graph information."
 )
 parser.add_argument(
-    "path", metavar="txt_path", type=str, help="Path to the *.txt file to process"
+    "path", metavar="txt_path", type=Path, help="Path to the *.txt file to process"
 )
 parser.add_argument(
     "--skip-processing",
