@@ -71,14 +71,16 @@ def main():
 
     args = _find_lines_args(lines)
 
-    print(f"Parsing with format as '{args['format']}'")
+    print(f"Parsing input with format: '{args['format']}'")
+
     if args["format"].lower() == "informal":
         graph = tools.fromtext.informal_to_fsa(lines)
     elif args["format"].lower() == "formal":
         graph = tools.fromtext.formal_to_fsa(lines)
     else:
-        raise Exception(f"Unknown text format '{args['format']}'!")
-    print("Parsing success!")
+        raise Exception(f"Unknown input format '{args['format']}'!")
+
+    print("Parsed successfully!")
 
     actions: list[str]
     actions = args["action"]
