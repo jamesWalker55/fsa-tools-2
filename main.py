@@ -24,7 +24,6 @@ parser.add_argument(
     help="Whether to enable debug mode or not",
     action="store_true",
 )
-cmd_args = parser.parse_args()
 print()
 
 # =========================define fuctions=========================
@@ -75,41 +74,41 @@ def _find_lines_args(lines: list[str]):
     return args
 
 
-path = Path(cmd_args.path)
+def main():
+    cmd_args = parser.parse_args()
 
-with open(path, "r", encoding="utf-8") as f:
-    lines = f.read().splitlines()
+    with open(cmd_args.path, "r", encoding="utf-8") as f:
+        lines = f.read().splitlines()
 
-args = _find_lines_args(lines)
+    args = _find_lines_args(lines)
 
-print(f"Parsing with format as '{args['format']}'")
+    print(f"Parsing with format as '{args['format']}'")
+    if args["format"].lower() == "informal":
+        graph = tools.fromtext.informal_to_fsa(lines)
+    elif args["format"].lower() == "formal":
+        graph = tools.fromtext.formal_to_fsa(lines)
+    else:
+        _error(f"Unknown text format '{args['format']}'!")
+    print("Parsing success!")
 
-if args["format"].lower() == "informal":
-    graph = tools.fromtext.informal_to_fsa(lines)
-elif args["format"].lower() == "formal":
-    graph = tools.fromtext.formal_to_fsa(lines)
-else:
-    _error(f"Unknown text format '{args['format']}'!")
+    actions: list[str]
+    actions = args["action"]
+    if cmd_args.skip_processing:
+        print("skip is intended for use with python interactive mode")
+        print("Skipping all processing")
+        print(f"    `graph`: {graph}")
+        print(f"    `path`: {cmd_args.path}")
+        from obj.fsa import FSA
+    else:
+        for action in actions:
+            func = proc_funcs.get(action.lower())
+            if func:
+                print(f"{action.capitalize()}: Starting...")
+                func(graph, cmd_args.path)
+                print(f"{action.capitalize()}: Success!")
+                print()
+            else:
+                print(f"Unknown action '{action}'")
 
-print("Parsing success!")
 
-# =========================process graph=========================
-actions: list[str]
-actions = args["action"]
-
-if cmd_args.skip_processing:
-    print("skip is intended for use with python interactive mode")
-    print("Skipping all processing")
-    print(f"    `graph`: {graph}")
-    print(f"    `path`: {path}")
-    from obj.fsa import FSA
-else:
-    for action in actions:
-        func = proc_funcs.get(action.lower())
-        if func:
-            print(f"{action.capitalize()}: Starting...")
-            func(graph, path)
-            print(f"{action.capitalize()}: Success!")
-            print()
-        else:
-            print(f"Unknown action '{action}'")
+main()
