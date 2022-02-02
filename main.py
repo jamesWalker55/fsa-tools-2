@@ -44,12 +44,6 @@ proc_funcs = {
 
 
 # =========================parse text to graph=========================
-def _error(msg: str, line=None):
-    if line:
-        msg += f'\nError at: "{line}"'
-    raise Exception(msg)
-
-
 def _find_lines_args(lines: list[str]):
     args: dict[str, Union[list[str], str]]
     args = {}
@@ -57,19 +51,20 @@ def _find_lines_args(lines: list[str]):
         if line.strip().startswith("format "):
             words = line.split()
             if len(words) != 2:
-                _error("Expected exactly 1 word representing parser!", line=line)
+                raise Exception(
+                    f"Expected exactly 1 word representing parser!\nError at: {line}"
+                )
             args["format"] = words[1]
         elif line.strip().startswith("action "):
             words = line.split()
             if len(words) < 2:
-                _error(
-                    "Expected at least 1 word representing actions to perform!",
-                    line=line,
+                raise Exception(
+                    f"Expected at least 1 word representing actions to perform!\nError at: {line}"
                 )
             args["action"] = words[1:]
 
     if len(args.keys()) != 2:
-        _error("Format/Action line is missing!")
+        raise Exception("Format/Action line is missing!")
 
     return args
 
@@ -88,7 +83,7 @@ def main():
     elif args["format"].lower() == "formal":
         graph = tools.fromtext.formal_to_fsa(lines)
     else:
-        _error(f"Unknown text format '{args['format']}'!")
+        raise Exception(f"Unknown text format '{args['format']}'!")
     print("Parsing success!")
 
     actions: list[str]
