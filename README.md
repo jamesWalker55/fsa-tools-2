@@ -1,6 +1,6 @@
 # FSA Tools 2
 
-A set of tools for rendering, processing, solving finite state automata and pushdown automata.
+A set of tools for rendering and processing finite state automata.
 
 ## How to use
 
@@ -9,7 +9,7 @@ main.py INPUT_FILE
 main.py examples/informal1.txt
 ```
 
-This tool takes a single text file as input. The text file describes the FSA/PDA and lists actions to perform on the FSA/PDA. An input file looks like this:
+This tool takes a single text file as input. The text file describes the FSA and lists actions to perform on the FSA. An input file looks like this:
 
 ```
 # this is a comment
