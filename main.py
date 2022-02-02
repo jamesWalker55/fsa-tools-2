@@ -18,12 +18,6 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "path", metavar="txt_path", type=Path, help="Path to the *.txt file to process"
 )
-parser.add_argument(
-    "--skip-processing",
-    "-sp",
-    help="Whether to enable debug mode or not",
-    action="store_true",
-)
 print()
 
 # =========================define fuctions=========================
@@ -88,22 +82,15 @@ def main():
 
     actions: list[str]
     actions = args["action"]
-    if cmd_args.skip_processing:
-        print("skip is intended for use with python interactive mode")
-        print("Skipping all processing")
-        print(f"    `graph`: {graph}")
-        print(f"    `path`: {cmd_args.path}")
-        from obj.fsa import FSA
-    else:
-        for action in actions:
-            func = proc_funcs.get(action.lower())
-            if func:
-                print(f"{action.capitalize()}: Starting...")
-                func(graph, cmd_args.path)
-                print(f"{action.capitalize()}: Success!")
-                print()
-            else:
-                print(f"Unknown action '{action}'")
+    for action in actions:
+        func = proc_funcs.get(action.lower())
+        if func:
+            print(f"{action.capitalize()}: Starting...")
+            func(graph, cmd_args.path)
+            print(f"{action.capitalize()}: Success!")
+            print()
+        else:
+            print(f"Unknown action '{action}'")
 
 
 main()
